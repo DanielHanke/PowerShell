@@ -9,7 +9,7 @@
  param (
     [string]$RepoUserName = "TrendCPRepo",
     [string]$RepoName = "TREFILA-LIT3-BME-SIERRA",
-    [string]$pdfPath = "C:\Users\t61162\Documents\metric\latex\",
+    [string]$pdfPath = $PSScriptRoot + "\latex\",
     [string]$pdfFile = "issues.tex" 
  )
 
@@ -128,7 +128,7 @@ function WriteLatex{
                 $startImageTag = $line.IndexOf("![Image]")
                 $startImageUri = $line.IndexOf("![Image]") + 9
                 $endImageUri = $line.substring( $startImageUri).IndexOf(")")
-                $outputFile = ".\latex\img\" + $global:img_num.ToString() + ".jpg"
+                $outputFile = $PSScriptRoot +"\latex\img\" + $global:img_num.ToString() + ".jpg"
                 $img = Invoke-RestMethod -Method get -Uri $line.substring( $startImageUri, $endImageUri) -Headers $headers -OutFile $outputFile
                 $str = "\includegraphics[width=\textwidth]{./img/" + + $img_num.ToString() + ".jpg" + "}"
                 $line = $line.replace( $line.substring( $startImageUri-9, $endImageUri+10), $str) 
@@ -511,8 +511,6 @@ function GetIssues{
  
 
 }
-
-
 
 ##### Main function 
 Write-Output "% ┌──────────────────────────────────────────────────────────────┐" | Out-file -FilePath $pdfFile -Encoding utf8
