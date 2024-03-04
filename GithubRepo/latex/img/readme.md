@@ -1,0 +1,1 @@
+# In this folder the script will download the Github images attached to the issues
