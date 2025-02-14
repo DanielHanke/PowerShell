@@ -153,7 +153,8 @@ function WriteSubSectionLatex{
 
     param ($line)
     if ($line){
-        $str = "\subsection{" + $line.replace("_","\textunderscore ").replace("#","\# ") + "}"
+        #$str = "\subsection{" + $line.replace("_","\textunderscore ").replace("#","\# ") + "}"
+        $str = "\subsection{" + $line.replace("_","\textunderscore ").replace("#"," ") + "}"
         }
     WriteLatex $str
 }
@@ -167,7 +168,7 @@ function DrawGraph{
     WriteLatex "    \begin{axis}["
     WriteLatex "            		x tick label style={"
     WriteLatex "        		/pgf/number format/1000 sep=},"
-    WriteLatex "        	ylabel=horas,"
+    WriteLatex "        	ylabel=dias,"
     WriteLatex "        	xlabel=tarea,"
     WriteLatex "        	enlargelimits=0.05,"
     WriteLatex "        	legend style={font=\sansmath\sffamily,at={(0.5,0)},"
@@ -325,7 +326,7 @@ function GetIssues{
 
         $line = "\par \textbf{Autor}: " + "\textcolor{blue}{ " + $issues[$i].user.login + "}"
         WriteLatex $line
-        $line = "\par \textbf{Fecha creacion}: " + "\textcolor{blue}{ " + [datetime]$issues[$i].created_at + "}"
+        $line = "\par \textbf{Fecha creacion}: " + "\textcolor{blue}{ " + ([datetime]$issues[$i].created_at).ToString('dd/MM/yyyy HH:mm') + "}"
         WriteLatex $line
         #if ($issues[$i].closed_at){
         #    $line = "\par \textbf{Fecha cerrado}: " + "\textcolor{blue}{ " + $issues[$i].close_at + "}"
@@ -373,6 +374,8 @@ function GetIssues{
         Write-Output "% │ a.1. Events                                                  │" | Out-file -FilePath $pdfFile -Encoding utf8 -Append
         Write-Output "% └──────────────────────────────────────────────────────────────┘" | Out-file -FilePath $pdfFile -Encoding utf8 -Append
 
+        $IssueAssigned = 0
+
 
         if ($events.Count -gt 0){
             WriteLatex "\subsubsection{Eventos}"
@@ -398,6 +401,8 @@ function GetIssues{
                         else{
                             $line = $line  + "Asignada a \textbf{\textcolor{Blue4}{" + $events[$k].assignee.login + "}} por \textbf{\textcolor{Blue4}{" + $events[$k].actor.login +"}}&"
                         }
+                        $IssueAssigned = 1
+
                     }
                     "closed" {
                         #Write-Output $events[$k]
@@ -424,6 +429,7 @@ function GetIssues{
                     {
                         $line = "\textbf{\textcolor{SpringGreen4}{\faMinusSquare}} "+ "&" + $events[$k].event + "&"
                         $line = $line  + "Des-asignado por \textbf{\textcolor{Blue4}{" + $events[$k].actor.login +"}}&"
+                        $IssueAssigned = 0
                     }
                     "renamed"
                     {
@@ -435,30 +441,72 @@ function GetIssues{
                         $line = $line  + " - " + "&"
                     }
                 }
-                $line = $line  + [datetime]$events[$k].created_at + "\\"
+                $line = $line  + ([datetime]$events[$k].created_at).ToString('dd/MM/yyyy HH:mm') + "\\"
                 WriteLatex $line
             }
 
             
             if ($state -eq "closed"){
+
                 $diferencia = $FechaCerrado  - $FechaAsignado
                 $TotalHours = $TotalHours + $($diferencia.TotalHours)
 
+                Write-Host ">"
+                Write-Host $issues[$i].title
+                Write-Host $FechaCerrado
+                Write-Host $FechaAsignado
+                Write-Host $diferencia
+                Write-Host $diferencia.TotalHours
+                Write-Host "<"
+
                 if ($diferencia.TotalHours -lt 0){
+                    if ($IssueAssigned -eq 0){
+                        $line = "" + "&" +
+                                "" + "&" +
+                                "\textcolor{teal}{\textbf{TIEMPO TOTAL}}" + "& \textcolor{Red1}{" + 
+                                " SIN ASIGNAR " + " horas \faExclamationTriangle } \ \\"
+                    
+                    }
+                    else{
+
                     $line = "" + "&" +
                             "" + "&" +
                             "\textcolor{teal}{\textbf{TIEMPO TOTAL}}" + "& \textcolor{Red1}{" + 
                             [math]::Round($($diferencia.TotalHours),2) + " horas \faExclamationTriangle } \ \\"
+                    }
                 }
-                else {
-                    $line = "" + "&" +
+                else 
+                {
+                    if ($diferencia.TotalHours -lt 1){
+                    
+                        $line = "" + "&" +
                             "" + "&" +
                             "\textcolor{teal}{\textbf{TIEMPO TOTAL}}" + "&" + 
-                            [math]::Round($($diferencia.TotalHours),2) + " horas \\"
+                            [math]::Round($($diferencia.TotalMinutes),2) + " minutos \\"
+
+                    }
+                    else
+                    {
+                    if ($diferencia.TotalHours -gt 24){
+                        $line = "" + "&" +
+                                "" + "&" +
+                                "\textcolor{teal}{\textbf{TIEMPO TOTAL}}" + "&" + 
+                               [math]::Round($($diferencia.TotalDays),2) + " dias \\"
+                    }
+                    else
+                    {
+                        $line = "" + "&" +
+                                "" + "&" +
+                                "\textcolor{teal}{\textbf{TIEMPO TOTAL}}" + "&" + 
+                               [math]::Round($($diferencia.TotalHours),2) + " horas \\"
+                     }   }
+                    
                 }
-                $TaskArray.Add($issues[$i].number.ToString() + " : " + $issues[$i].title)
-                $TimeArray.Add([math]::Round($($diferencia.TotalHours),2))
-                $DateCloseArray.Add($FechaCerrado)
+                if ($IssueAssigned -eq 1){
+                    $TaskArray.Add($issues[$i].number.ToString() + " : " + $issues[$i].title)
+                    $TimeArray.Add([math]::Round($($diferencia.TotalDays),2))
+                    $DateCloseArray.Add($FechaCerrado)
+                }
                 WriteLatex $line
             }
             WriteLatex "};"
@@ -483,7 +531,7 @@ function GetIssues{
                     WriteLatex $line
 	                $line = "    title=My nice heading,"
                     WriteLatex $line
-	                $line = "    title=" + [datetime]$comments[$j].created_at + "]"
+	                $line = "    title=" + ([datetime]$comments[$j].created_at).ToString('dd/MM/yyyy HH:mm') + " by " + $comments[$j].user.login + "]"
                     WriteLatex $line
 	                $line = $comments[$j].body
                     WriteLatex $line
