@@ -9,12 +9,12 @@
  param (
     [string]$RepoUserName = "TrendCPRepo",
     [string]$RepoName = "TREFILA-LIT3-BME-SIERRA",
-    [string]$pdfPath = $PSScriptRoot + "\latex\",
+    [string]$pdfPath = $PSScriptRoot + "\" + $RepoName + "\",
     [string]$pdfFile = "issues.tex" 
  )
 
 
-$pdfFile = $pdfPath + $RepoUserName + $RepoName +"_" + $pdfFile
+$pdfFile = $pdfPath + $RepoUserName + "_" + $RepoName +"_" + $pdfFile
 
 #
 # arrays con tiempos para generar un gráfico al final del script
@@ -128,14 +128,14 @@ function WriteLatex{
                 $startImageTag = $line.IndexOf("![Image]")
                 $startImageUri = $line.IndexOf("![Image]") + 9
                 $endImageUri = $line.substring( $startImageUri).IndexOf(")")
-                $outputFile = $PSScriptRoot +"\latex\img\" + $global:img_num.ToString() + ".jpg"
+                $outputFile = $pdfPath +"\img\" + $global:img_num.ToString() + ".jpg"
                 $img = Invoke-RestMethod -Method get -Uri $line.substring( $startImageUri, $endImageUri) -Headers $headers -OutFile $outputFile
                 $str = "\includegraphics[width=\textwidth]{./img/" + + $img_num.ToString() + ".jpg" + "}"
                 $line = $line.replace( $line.substring( $startImageUri-9, $endImageUri+10), $str) 
                 $global:img_num = $global:img_num + 1
             }        
         }
-        Write-Output $line.replace("_","\textunderscore ").replace("#","\# ")  | Out-file -FilePath $pdfFile -Encoding utf8 -Append
+        Write-Output $line.replace("_","\textunderscore ").replace("#","\# ").replace(">"," ")  | Out-file -FilePath $pdfFile -Encoding utf8 -Append
     }
 }
 
@@ -561,6 +561,20 @@ function GetIssues{
 }
 
 ##### Main function 
+
+
+$testpath = Test-Path -Path $pdfPath
+If ($testpath -ne $true) {
+    New-Item -ItemType Directory -Path $pdfPath
+}
+
+
+$imagePath = $pdfPath + "\img"
+$imgPathExists = Test-Path -Path $imagePath
+If ($imgPathExists -ne $true) {
+    New-Item -ItemType Directory -Path $imagePath
+}
+
 Write-Output "% ┌──────────────────────────────────────────────────────────────┐" | Out-file -FilePath $pdfFile -Encoding utf8
 Write-Output "% │Generate.ps1 generó automáticamente este archivo              │" | Out-file -FilePath $pdfFile -Encoding utf8 -Append
 Write-Output "% │   Este script ingresa a un repositorio de GitHub, itera      │" | Out-file -FilePath $pdfFile -Encoding utf8 -Append
