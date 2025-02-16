@@ -2,16 +2,5 @@
 *.log
 *.aux
 *.out
-*.pdf
-*.gz
-*.toc
 *.tex
-*.jpg
-basic.ps1
-basic2.ps1
-GitHub2Latex
 
-
-Chart/StackedColumn.ps1
-GitHub2Latex/generate.ps1
-/GitHub2Latex
