@@ -19,3 +19,12 @@ Crear un diagrama de torta y guardarlo como imagen en el disco
 **StackedColumn**
 Grafico de barras mínimo
 
+## Web
+
+### Json
+
+**GetWikipediaJson**
+Obtener una pagina web, y procesarla, convirtiendola en Json, en solo 10 lineas de código
+
+**GetIssuesFromGitHub**
+Obtener los issues o tareas de un repositorio. Si el repositorio es privado requerira un esfuerzo extra, para obtener las credenciales, esto puede hacerse sin problemas, pero a efectos de ejemplo, me parece mas pertinente los ejemplos sencillos y claros.
