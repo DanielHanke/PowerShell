@@ -4,3 +4,6 @@
 *.out
 *.tex
 
+SQLite/db.srd
+Chart/Pie/PieChart.png
+Chart/StackedColumn/StackedColumn.png

@@ -16,6 +16,6 @@ Ejemplos de grafico de barras, lineas y torta
 **Pie**
 Crear un diagrama de torta y guardarlo como imagen en el disco
 
+**StackedColumn**
+Grafico de barras mínimo
 
-## HitHubRepo
-Generate a report in laTeX from a github repo
