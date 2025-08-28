@@ -32,5 +32,5 @@ jobs:
         run: |
           git add .github/badges/last-commit.svg
           git commit -m "🔄 Actualizar badge de último commit" || echo "Sin cambios para commitear"
-          git push origin HEAD
+          git push origin HEAD:${{ github.ref_name }}
 
