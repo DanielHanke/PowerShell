@@ -1,0 +1,97 @@
+﻿[
+  {
+    "Nombre": "Gonzalo Asis",
+    "Presente": 0,
+    "Correo": "gaasis@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Terminar de probar comandos de FrontEnd en la comunicación SignalR",
+        "Objetivo": "Es necesario probar los comandos en la comunicación web versus manager",
+        "Items": [
+          {
+            "Descripcion": "Terminar vista de calibracion",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Deploy FronEnd y Backend en vm00259d.apre.siderca.ot",
+            "Terminado": 0
+          }
+
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Mellerlin Borges",
+    "Presente": 1,
+    "Correo": "mborges@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Bajar el proyecto Horas, compilarlo y prepararlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Martina Moscufa",
+    "Presente": 1,
+    "Correo": "mmoscufa@trendingenieria.com.ar",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Seguimiento de funcionalidad en produccion BsAs",
+        "Objetivo": "Tener funcionando el proyecto para ser puesto a prueba por los usuarios",
+        "Items": [
+          {
+            "Descripcion": "Ver porqué los usuarios para cargar horas deben tener locationId de San Nicolas",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Ignacio Uhrin",
+    "Presente": 1,
+    "Correo": "nachouhrin@gmail.com",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Incorpoar pantallas al proyecto para lograr funcionalidad móvil", 
+        "Objetivo": "",
+        "Items": [
+          {
+            "Descripcion": "probar las pantallas en un dispositivo móvil",
+            "Terminado": 0
+          }
+        ]
+      }      
+    ]
+  },
+  {
+    "Nombre": "Nicolas Romero",
+    "Presente": 1,
+    "Correo": "RNICOLAS@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Investigar producción, generar nuevos tubos y simularlos en el espacio virtual",
+        "Objetivo": "",
+        "Items": [
+          {
+            "Descripcion": "Dejar el sistema funcionando con sus modulos cross en un ambiente simulado",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  }
+]

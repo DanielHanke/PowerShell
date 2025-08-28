@@ -1,0 +1,4 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="150" height="20">
+  <rect width="150" height="20" fill="orange"/>
+  <text x="10" y="14" fill="white" font-family="Verdana" font-size="12">Version: v1.2.3</text>
+</svg>

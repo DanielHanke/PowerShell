@@ -1,0 +1,92 @@
+﻿[
+  {
+    "Nombre": "Gonzalo Asis",
+    "Presente": 0,
+    "Correo": "gaasis@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Terminar en el guardado de TDA",
+        "Objetivo": "Terminar en el guardado de TDA",
+        "Items": [
+          {
+            "Descripcion": "Terminar en el guardado de TDA",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Mellerlin Borges",
+    "Presente": 1,
+    "Correo": "mborges@trendingenieria.com.ar",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Bajar el proyecto Horas, compilarlo y prepararlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Martina Moscufa",
+    "Presente": 1,
+    "Correo": "mmoscufa@trendingenieria.com.ar",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Deploy de sistema con mejoras",
+        "Objetivo": "Deploy de sistema con mejoras",
+        "Items": [
+          {
+            "Descripcion": "Deploy de sistema con mejoras",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Ignacio Uhrin",
+    "Presente": 1,
+    "Correo": "nachouhrin@gmail.com",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Deploy de sistema con mejoras", 
+        "Objetivo": "Deploy de sistema con mejoras",
+        "Items": [
+          {
+            "Descripcion": "Deploy de sistema con mejoras",
+            "Terminado": 0
+          }
+        ]
+      }      
+    ]
+  },
+  {
+    "Nombre": "Nicolas Romero",
+    "Presente": 1,
+    "Correo": "RNICOLAS@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Terminar en el guardado de TDA",
+        "Objetivo": "Terminar en el guardado de TDA",
+        "Items": [
+          {
+            "Descripcion": "Terminar en el guardado de TDA",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  }
+]

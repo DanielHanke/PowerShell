@@ -1,0 +1,302 @@
+﻿[
+  {
+    "Nombre": "Gonzalo Asis",
+    "Presente": 0,
+    "Correo": "gaasis@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Terminar de probar comandos de FrontEnd en la comunicación SignalR",
+        "Objetivo": "Es necesario probar los comandos en la comunicación web versus manager",
+        "Items": [
+          {
+            "Descripcion": "Enviar espesor del manager al front",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Dibujar el espesor en el grafico",
+            "Terminado": 1
+          },          
+          {
+            "Descripcion": "Enviar datos maximos, minimos, promedios, canal interno, externo, espesor ",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Mostrar datos maximos, minimos, promedios, canal interno, externo en pantalla",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Iniciar una adquisición cuando ya se está ejecutando",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Detener adquisición cuando no esté ejecutando",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Diferentes tiempos de scan",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Diferentes capacidades de buffer",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Hacer el grafico polar funcional",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Hacer vista de configuracion",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Hacer vista de traceability",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Mostrar datos maximos, minimos, en los gráficos de barra",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Hacer vista de historicos",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Mellerlin Borges",
+    "Presente": 1,
+    "Correo": "mborges@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Bajar el proyecto Horas, compilarlo y prepararlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Bajar del repositorio el proyecto o pedirlo a Martina en un Zip",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Compilar el proyecto",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Instalar y configurar una base de datos local",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      },
+      {
+        "Proyecto": "PATRONES",
+        "Descripcion": "Bajar el proyecto, compilarlo y prepararlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Bajar del repositorio el proyecto",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Compilar el proyecto",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Instalar y configurar una base de datos local",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      }  
+    ]
+  },
+  {
+    "Nombre": "Martina Moscufa",
+    "Presente": 1,
+    "Correo": "mmoscufa@trendingenieria.com.ar",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Seguimiento de funcionalidad en produccion BsAs",
+        "Objetivo": "Tener funcionando el proyecto para ser puesto a prueba por los usuarios",
+        "Items": [
+          {
+            "Descripcion": "Copiar el proyecto front-end",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Copiar el backend",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Configurar IIS",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Configurar base de datos",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Hacer funcionar el sistema con un usuario desde fuera de la intranet",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Ver porqué algunos usuarios no se ven para cargar hs",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Ver porqué los usuarios para cargar horas deben tener locationId de San Nicolas",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Analizar que significa el cambio de cargar 8.5 horas. Hoy deja solo números enteros",
+            "Terminado": 0
+          }          
+        ]
+      }
+    ]
+  },
+  {
+    "Nombre": "Ignacio Uhrin",
+    "Presente": 1,
+    "Correo": "nachouhrin@gmail.com",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Relevar pantallas, para que Mellerlin / Nahuel puedan rediseñarlas",
+        "Objetivo": "Tener un documento para que los chicos puedan trabajar",
+        "Items": [
+          {
+            "Descripcion": "Identificar y enumerar las pantallas del sistema, tanto las que se ven en la pc, como las que estuvieron ya trabajando",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Documentarlas en un ticket o correo",
+            "Terminado": 1
+          }
+        ]
+      },
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Rediseñar las pantallas del proyecto para lograr funcionalidad móvil",
+        "Objetivo": "",
+        "Items": [
+          {
+            "Descripcion": "Rediseñar las pantallas",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "probar las pantallas en un dispositivo móvil",
+            "Terminado": 0
+          }
+        ]
+      }      
+    ]
+  },
+  {
+    "Nombre": "Nahuel Flores",
+    "Presente": 0,
+    "Correo": "nflores@trendingenieria.com.ar",
+    "tareas": [
+      {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Bajar el proyecto Horas, compilarlo y preparlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Bajar del repositorio el proyecto o pedirlo a Martina en un Zip",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Compilar el proyecto",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Instalar y configurar una base de datos local",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      },
+ {
+        "Proyecto": "HORAS TREND",
+        "Descripcion": "Analizar el software en base a lo que hace hoy el software Delphi",
+        "Objetivo": "Saber que funcionalidad falta en el software, basándonos en el Carga de horas Delphi actual",
+        "Items": [
+          {
+            "Descripcion": "Generar OT, Proyecto y Tickets, ver que datos se cargan en el sistema, si se contempla la información del programa anterior",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Generar una lista de diferencias entre el sistema actual y el que se desea",
+            "Terminado": 0
+          }
+        ]
+      }      
+    ]
+  },
+  {
+    "Nombre": "Nicolas Romero",
+    "Presente": 1,
+    "Correo": "RNICOLAS@suppliers.tenaris.com",
+    "tareas": [
+      {
+        "Proyecto": "LEMS",
+        "Descripcion": "Investigar producción, generar nuevos tubos y simularlos en el espacio virtual",
+        "Objetivo": "",
+        "Items": [
+          {
+            "Descripcion": "Probar si funciona el script de nuevos tubos",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Simular el tracking de los tubos",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Instalar y probar sin conexion, el nuevo manager LEMS",
+            "Terminado": 0
+          }
+        ]
+      },
+      {
+        "Proyecto": "PATRONES",
+        "Descripcion": "Bajar el proyecto, compilarlo y prepararlo para ejecutarlo localmente",
+        "Objetivo": "Tener el proyecto para poder desarrollar sobre él, ya que hay tareas que necesitamos continuar",
+        "Items": [
+          {
+            "Descripcion": "Bajar del repositorio el proyecto",
+            "Terminado": 1
+          },
+          {
+            "Descripcion": "Compilar el proyecto",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Instalar y configurar una base de datos local",
+            "Terminado": 0
+          },
+          {
+            "Descripcion": "Probar el sistema de forma básica",
+            "Terminado": 0
+          }
+        ]
+      }
+    ]
+  }
+]
