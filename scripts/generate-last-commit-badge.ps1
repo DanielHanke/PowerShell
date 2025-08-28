@@ -1,5 +1,5 @@
 # Ruta del repositorio local
-$repoPath = "C:\Dev\PowerShell\"
+$repoPath = ".\"
 Set-Location $repoPath
 
 # Obtener último commit
