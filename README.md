@@ -10,6 +10,7 @@ Conexion, creacion de tablas, recupero de datos SQLite
 **CreateDB**
 Crear una base de datos, generar unos cuantos registros de muestra
 
+
 **Select**
 Mostrar en consola algunos registros ya creados
 
