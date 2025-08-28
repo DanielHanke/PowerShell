@@ -22,7 +22,7 @@ jobs:
         shell: pwsh
         run: .\scripts\generate-last-commit-badge.ps1
 
-      - name: Configurar autenticación con token
+      - name: Configurar autenticaciï¿½n con token
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
@@ -31,5 +31,6 @@ jobs:
       - name: Commit y push del badge actualizado
         run: |
           git add .github/badges/last-commit.svg
-          git commit -m ":”„ Actualizar badge de Ãºltimo commit"
-          git push
+          git commit -m "ðŸ”„ Actualizar badge de Ãºltimo commit" || echo "Sin cambios para commitear"
+          git push origin HEAD
+
