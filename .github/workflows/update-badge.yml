@@ -1,0 +1,29 @@
+# .github/workflows/update-badge.yml
+name: Actualizar badge de último commit
+
+on:
+  push:
+    branches:
+      - main  # o tu rama principal
+
+jobs:
+  update-badge:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Ejecutar script PowerShell
+        shell: pwsh
+        run: .\scripts\generate-last-commit-badge.ps1
+
+      - name: Commit y push del badge actualizado
+        run: |
+          git add .github/badges/last-commit.svg
+          git commit -m "🔄 Actualizar badge de último commit"
+          git push

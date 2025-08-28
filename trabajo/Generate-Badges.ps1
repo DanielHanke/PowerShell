@@ -21,6 +21,10 @@ function New-Badge {
     $svg | Out-File -Encoding utf8 $file
 }
 
+# 📦 Leer versión desde VERSION.txt
+$version = Get-Content VERSION.txt -ErrorAction SilentlyContinue
+if (-not $version) { $version = "v?.?" }
+
 # Ejemplos dinámicos
 New-Badge -label "Build" -message "OK" -color "green" -filename "build"
 New-Badge -label "Version" -message "v1.2.3" -color "orange" -filename "version"

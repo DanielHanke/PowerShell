@@ -1,0 +1,6 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="400" height="20">
+  <rect width="400" height="20" fill="#555"/>
+  <text x="10" y="15" fill="#fff" font-family="Verdana" font-size="12">
+    último commit: 2025-08-28 : Add json files
+  </text>
+</svg>
