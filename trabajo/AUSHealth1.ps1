@@ -32,7 +32,8 @@
 #>
 param (
     [string]$UdlFile = "c:\Dev\Powershell\trabajo\Lems.udl",
-    [string]$FromDate = "2025-09-24",
+    [string]$FromDate = "2025-09-20 11:20:00 -03:00",
+    [string]$ToDate = "2025-09-24 18:22:00 -03:00",
     [string]$Planta = "PEMA",
     [string]$Linea = "LEMS"
 
@@ -110,6 +111,215 @@ Function Add-Svg-Graph {
     $svg = $svg + '</svg>'
     return $svg
 } 
+
+Function ReadPresets{
+    param (
+        [System.Data.OleDb.OleDbConnection] $conn,
+        [System.Collections.ArrayList]$data,
+        [string]$FromDate,
+        [string]$ToDate
+     )
+    $query = 'SELECT [Value],[SetDateTime],[Code],[Name],[MinValue],[MaxValue] FROM [Preset].[History] ph JOIN [Preset].[Preset] p ON p.IdPreset = ph.IdPreset WHERE ph.[SetDateTime] BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''' ORDER BY ph.[SetDateTime] ASC'  
+    $command = $conn.CreateCommand()
+    $command.CommandText = $query
+    $reader = $command.ExecuteReader()
+    while ($reader.Read()) 
+    {
+
+        $obj = [PSCustomObject]@{
+            SetDateTime = $reader["SetDateTime"].ToString()
+            PresetCode = $reader["Code"].ToString()
+            PresetName = $reader["Name"].ToString()
+            MinValue = $reader["MinValue"].ToString()
+            MaxValue = $reader["MaxValue"].ToString()
+            Value = $reader["Value"].ToString()
+
+        }
+        $x = $data.Add($obj)
+    }
+    $reader.Close()      
+}
+
+
+function PivotPresets{
+    param (
+        [System.Collections.ArrayList]$data,
+        [hashtable]$pivot
+     )
+    foreach ($item in $data) {
+        $name = $item.PresetName
+        if (-not $pivot.ContainsKey($name)) {
+            $pivot[$name] = [ordered]@{PresetName = $name}
+        }
+
+        $count = ($pivot[$name].Keys | Where-Object { $_ -like "Valor_*" }).Count + 1
+        $pivot[$name]["Valor_$count"] = $item.Value
+        $pivot[$name]["DateTime_$count"] = $item.SetDateTime
+}
+
+# Convertir a objetos para mostrar
+$pivot.Values | ForEach-Object {
+    [PSCustomObject]$_
+}
+
+}
+
+function PresetPivotTable{
+    param (
+        [Hashtable]$data
+     )
+
+    # Agrupar por PresetName
+    $agrupado = $data | Group-Object -Property PresetName
+
+
+    # Construir una tabla por grupo
+    foreach ($grupo in $agrupado) {
+        $html += "<h2>$($grupo.Name)</h2>"
+        $html += "<table><tr>"
+
+        # Encabezados dinámicos
+        for ($i = 0; $i -lt $grupo.Group.Count; $i++) {
+            $html += "<th>Valor_$($i+1)</th><th>DateTime_$($i+1)</th>"
+        }
+        $html += "</tr><tr>"
+
+        # Valores dinámicos
+        foreach ($item in $grupo.Group) {
+            $html += "<td>$($item.Value)</td><td>$($item.SetDateTime)</td>"
+        }
+
+        $html += "</tr></table>"
+    }
+
+    $result = $html
+    return $result
+}
+
+
+function PresetTable{
+    param (
+        [System.Collections.ArrayList]$data
+     )
+
+    $result = ''
+    $result = $result + '<table cellpadding="10" cellspacing="0" border="1" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 12px">'
+    $result = $result + '<thead>'
+    $result = $result + '<tr style="background-color: #4CAF50; color: white;">'
+    $result = $result + '<th rowspan="2">FECHA DEL CAMBIO</th>'    
+    $result = $result + '<th rowspan="2">CODIGO</th>'
+    $result = $result + '<th rowspan="2">NOMBRE</th>'
+    $result = $result + '<th rowspan="2">VALOR</th>'
+    $result = $result + '<th colspan="2">LIMITES</th>'
+    $result = $result + '</tr>'
+
+    $result = $result + '<tr style="background-color: #4CAF50; color: white;">'
+    $result = $result + '<th>MINIMO</th>'
+    $result = $result + '<th>MAXIMO</th>'
+    $result = $result + '</tr>'
+
+    $result = $result + '</thead>'
+
+    $result = $result + '<tbody>'
+
+    for ($i = 0; $i -lt $data.Count; $i++) {
+        $result = $result + '<tr style="background-color: #f2f2f2;">'
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].SetDateTime.SubString(0,19) +'</td>'    
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].PresetCode +'</td>'    
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].PresetName +'</td>'    
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].Value +'</td>'    
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].MinValue +'</td>'    
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].MaxValue +'</td>'    
+
+
+        $result = $result + '</tr>'
+    }
+        
+    $result = $result + '</tbody>'
+    $result = $result + '</table>'
+    return $result
+}
+
+
+Function ReadAlarmas{
+    param (
+        [System.Data.OleDb.OleDbConnection] $conn,
+        [System.Collections.ArrayList]$data,
+        [string]$FromDate,
+        [string]$ToDate
+     )
+    $query = 'SELECT [Name],[ActivationDateTime],[DeactivationDateTime],[AcknowledgeDateTime] FROM [Alarm].[History] AL JOIN [Alarm].[Alarm] A ON A.idAlarm = AL.idAlarm WHERE AL.[ActivationDateTime] BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''' ORDER BY AL.[ActivationDateTime] ASC'  
+    Write-Host $query
+    $command = $conn.CreateCommand()
+    $command.CommandText = $query
+    $reader = $command.ExecuteReader()
+    while ($reader.Read()) 
+    {
+
+        $obj = [PSCustomObject]@{
+            Name = $reader["Name"].ToString()
+            ActivationDateTime = $reader["ActivationDateTime"].ToString()
+            DeactivationDateTime = $reader["DeactivationDateTime"].ToString()
+            AcknowledgeDateTime = $reader["AcknowledgeDateTime"].ToString()
+
+        }
+        $x = $data.Add($obj)
+    }
+    $reader.Close()      
+}
+
+function AlarmaTable{
+    param (
+        [System.Collections.ArrayList]$data
+     )
+
+    $result = ''
+    $result = $result + '<table cellpadding="10" cellspacing="0" border="1" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 12px">'
+
+    $result = $result + '<thead>'
+    $result = $result + '<tr style="background-color: #4CAF50; color: white;">'
+    $result = $result + '<th>NOMBRE</th>'
+    $result = $result + '<th>ACTIVADO</th>'
+    $result = $result + '<th>DESACTIVADO</th>'
+    $result = $result + '<th>ACEPTADO</th>'
+    $result = $result + '</tr>'
+    $result = $result + '</thead>'
+
+    $result = $result + '<tbody>'
+
+    for ($i = 0; $i -lt $data.Count; $i++) {
+        $result = $result + '<tr style="background-color: #f2f2f2;">'
+        $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].Name +'</td>' 
+          
+        try{
+            $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].ActivationDateTime.SubString(0,19) +'</td>'
+        } catch{
+            $result = $result + '<td style="text-align: center;background-color: #E5E5FF"></td>'
+        }        
+        
+        try{
+            $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].DeactivationDateTime.SubString(0,19) +'</td>'
+        } catch{
+            $result = $result + '<td style="text-align: center;background-color: #E5E5FF"></td>'
+        }        
+        
+        try{
+            $result = $result + '<td style="text-align: center;background-color: #ccccff">' + $data[$i].AcknowledgeDateTime.SubString(0,19) +'</td>'
+        } catch{
+            $result = $result + '<td style="text-align: center;background-color: #E5E5FF"></td>'
+        }
+        
+        #Write-Host $data[$i].DeactivationDateTime
+
+        $result = $result + '</tr>'
+    }
+        
+    $result = $result + '</tbody>'
+    $result = $result + '</table>'
+    #$result = $result + '<p><sup>*</sup><small>La duración es solo de disparos que dieron OK</small></p>'
+    return $result
+}
+
 
 function HandshakeTable{
     param (
@@ -242,11 +452,12 @@ Function ReadMaxTriggerDuration{
     param (
         [System.Data.OleDb.OleDbConnection] $conn,
         [System.Collections.ArrayList]$data,
-        [string]$FromDate
+        [string]$FromDate,
+        [string]$ToDate
      )
     for ($i = 0; $i -lt $data.Count; $i++) {
 
-        $query = 'select MAX(CAST(DATEDIFF_BIG(MICROSECOND, CallBackDateTime, ResponseDateTime) AS FLOAT) / 1000000) AS Duration  from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime > ''' + $FromDate + '''' 
+        $query = 'select MAX(CAST(DATEDIFF_BIG(MICROSECOND, CallBackDateTime, ResponseDateTime) AS FLOAT) / 1000000) AS Duration  from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''''
         $command = $conn.CreateCommand()
         $command.CommandText = $query
         $reader = $command.ExecuteReader()
@@ -269,11 +480,12 @@ Function ReadMinTriggerDuration{
     param (
         [System.Data.OleDb.OleDbConnection] $conn,
         [System.Collections.ArrayList]$data,
-        [string]$FromDate
+        [string]$FromDate,
+        [string]$ToDate
      )
     for ($i = 0; $i -lt $data.Count; $i++) {
 
-        $query = 'select MIN(CAST(DATEDIFF_BIG(MICROSECOND, CallBackDateTime, ResponseDateTime) AS FLOAT) / 1000000) AS Duration  from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime > ''' + $FromDate + '''' 
+        $query = 'select MIN(CAST(DATEDIFF_BIG(MICROSECOND, CallBackDateTime, ResponseDateTime) AS FLOAT) / 1000000) AS Duration  from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''''
         $command = $conn.CreateCommand()
         $command.CommandText = $query
         $reader = $command.ExecuteReader()
@@ -298,11 +510,12 @@ Function ReadOKTriggerQuantity{
     param (
         [System.Data.OleDb.OleDbConnection] $conn,
         [System.Collections.ArrayList]$data,
-        [string]$FromDate
+        [string]$FromDate,
+        [string]$ToDate
      )
     for ($i = 0; $i -lt $data.Count; $i++) {
 
-        $query = 'select count(*) as qty from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime > ''' + $FromDate + '''' 
+        $query = 'select count(*) as qty from [Handshake].[HandshakeHistory] WHERE Result = 1 and idHandshake = ' + $data.HandshakeId[$i].ToString() + ' and CallbackDateTime BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''''
         $command = $conn.CreateCommand()
         $command.CommandText = $query
         $reader = $command.ExecuteReader()
@@ -327,11 +540,13 @@ Function ReadTriggerQuantity{
     param (
         [System.Data.OleDb.OleDbConnection] $conn,
         [System.Collections.ArrayList]$data,
-        [string]$FromDate
+        [string]$FromDate,
+        [string]$ToDate
      )
     for ($i = 0; $i -lt $data.Count; $i++) {
 
-        $query = 'select count(*) as qty from [Handshake].[HandshakeHistory] WHERE idHandshake = ' + $data[$i].HandshakeId.ToString() + ' and CallbackDateTime > ''' + $FromDate + '''' 
+        $query = 'select count(*) as qty from [Handshake].[HandshakeHistory] WHERE idHandshake = ' + $data[$i].HandshakeId.ToString() + ' and CallbackDateTime BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate + ''''
+        #Write-Host $query
         $command = $conn.CreateCommand()
         $command.CommandText = $query
         $reader = $command.ExecuteReader()
@@ -356,10 +571,12 @@ Function ReadLastErrors{
     param (
         [System.Data.OleDb.OleDbConnection] $conn,
         [System.Collections.ArrayList]$data,
-        [string]$FromDate
+        [string]$FromDate,
+        [string]$ToDate
      )
     for ($i = 0; $i -lt $data.Count; $i++) {
-        $query = 'select TOP 1 * from [Handshake].[HandshakeHistory] WHERE idHandshake = '+ $data[$i].HandshakeId.ToString() + ' and CallbackDateTime > ''' + $FromDate + '''' + ' and Result < 0  order by InsDateTime desc'
+        $query = 'select TOP 1 * from [Handshake].[HandshakeHistory] WHERE idHandshake = '+ $data[$i].HandshakeId.ToString() + ' and (CallbackDateTime BETWEEN ''' + $FromDate + ''' AND ''' + $ToDate +  ''') and Result < 0  order by InsDateTime desc'
+        #Write-Host $query
         $command = $conn.CreateCommand()
         $command.CommandText = $query
         $reader = $command.ExecuteReader()
@@ -377,6 +594,7 @@ Function ReadLastErrors{
         $reader.Close()      
     }
 }
+
 
 
 
@@ -427,6 +645,27 @@ Function CalcArrayValues{
     }
 }
 
+Function ReadHandshakeData{
+    param (
+        [System.Data.OleDb.OleDbConnection] $conn,
+        [System.Collections.ArrayList]$data,
+        [string]$FromDate,
+        [string]$ToDate
+     )
+    
+    ReadHandshakes -conn $connection -data $data
+    ReadLastErrors -conn $connection -data $data -FromDate $FromDate -ToDate $ToDate
+    ReadTriggerQuantity -conn $connection -data $data -FromDate $FromDate -ToDate $ToDate
+    ReadOkTriggerQuantity -conn $connection -data $data -FromDate $FromDate -ToDate $ToDate
+    ReadMinTriggerDuration -conn $connection -data $data -FromDate $FromDate -ToDate $ToDate
+    ReadMaxTriggerDuration -conn $connection -data $data -FromDate $FromDate -ToDate $ToDate
+    CalcArrayValues -data $data
+}
+
+#
+# Inicio del programa principal
+#
+
 # read ConnectionString from UDL File
 $udlContent = Get-Content $udlFile
 $connectionString = $udlContent | Where-Object { $_ -like "Provider=*" }
@@ -435,28 +674,28 @@ $connection.ConnectionString = $connectionString
 $connection.Open()
 
 
-$DataList = New-Object System.Collections.ArrayList
 
+$handshakeList = New-Object System.Collections.ArrayList
+$PresetList = New-Object System.Collections.ArrayList
+$PresetPivotList = @{}
+$AlarmaList = New-Object System.Collections.ArrayList
 
+# Leer la info de HS, llenando el $HandshakeList
+Write-Host 'Leyendo informacion de handshakes...'
+ReadHandshakeData -conn $connection -data $handshakeList -FromDate $FromDate -ToDate $ToDate
 
-Write-Host 'DB Get all active handshakes...'
-ReadHandshakes -conn $connection -data $DataList
+Write-Host 'Leyendo presets...'
+ReadPresets -conn $connection -data $PresetList -FromDate $FromDate -ToDate $ToDate
 
-Write-Host 'DB Get all last handshakes errors...'
-ReadLastErrors -conn $connection -data $DataList -FromDate $FromDate
+PivotPresets -data $PresetList -pivot $PresetPivotList
 
-Write-Host 'DB Get all handshake trigger count...'
-ReadTriggerQuantity -conn $connection -data $DataList -FromDate $FromDate
+Write-Host 'Leyendo alarmas...'
+ReadAlarmas -conn $connection -data $AlarmaList -FromDate $FromDate -ToDate $ToDate
 
-Write-Host 'DB Get all OK handshake trigger count...'
-ReadOkTriggerQuantity -conn $connection -data $DataList -FromDate $FromDate
-
-ReadMinTriggerDuration -conn $connection -data $DataList -FromDate $FromDate
-ReadMaxTriggerDuration -conn $connection -data $DataList -FromDate $FromDate
 
 #LogData -data $DataList
 
-CalcArrayValues -data $DataList 
+ 
 
 $str = 'Armando el correo...'
 Write-Host $str
@@ -509,19 +748,55 @@ $GraficoHSErrores = [Convert]::ToBase64String($bytes)
 # Crear una instancia de Outlook
 $outlook = New-Object -ComObject Outlook.Application
 $mail = $outlook.CreateItem(0)  # 0 representa un MailItem
+
 $mail.To = 'dehanke@suppliers.tenaris.com'
 #$mail.CC = "jtorresgauto@suppliers.tenaris.com"
+
 $fecha = Get-Date -Format "dd/MM/yyyy"
-$mail.Subject = $Planta + " -  " + $linea + "  Reporte Handshakes: " + $connection.Database + "@" + $connection.DataSource    +  " a la fecha " + $fecha
+#$mail.Subject = $Planta + " -  " + $linea + "  Reporte turno AUS: " + $connection.Database + "@" + $connection.DataSource    +  " desde " + $FromDate + " hasta " + $ToDate
+$mail.Subject = "Reporte funcionamiento AUS: " + $Planta + " - " + $linea + " desde " + $FromDate.Replace("-03:00","") + " hasta " + $ToDate.Replace("-03:00","")
 
-#$HandshakeTable = HandshakeTable -Handshakes $handshakes -Triggers $triggers -okCounts $okCounts -Dates $Dates -LastErrors $LastErrors -OkPercent $okPercent -ErrorPercent $ErrorPercent
-$HandshakeTable = HandshakeTable -data $DataList
+# Resumen de funcionamiento. En Blanco para que el usuario pueda poner sus notas
+$BitacoraHTMLTitle = '<h3>1. PARTE DE NOVEDADES</h3>'
+$BitacoraHTMLParagraph = '<p>Estas son las novedades o sucesos que se dieron entre ' + $FromDate.Replace("-03:00","") + ' y ' + $ToDate.Replace("-03:00","") + '</p><ul><li> [Ingrese sus novedades aquí] <li> [...] </ul>'
+$BitacoraHTMLZone =$BitacoraHTMLTitle + $BitacoraHTMLParagraph
 
-$HandshakeTable = '<h2>HANDSHAKES A PARTIR DE ' + $FromDate + '</h2><br>' + $HandshakeTable
-$text1 = '<p>Este es un resumen de los disparos ocurridos a partir de la fecha que se indica arriba. Este resumen nos dá una idea que cómo funcionó el proceso de tracking en el puesto actual</p>'
+# Resumen de HS. Titulo, Armado de la tabla HTML & texto explicati
+$HandshakeHTMLTitle = '<h3>2. HANDSHAKES</h3>'
+$HandshakeHTMLParagraph = '<p>Estos son los handshakes disparados entre ' + $FromDate.Replace("-03:00","") + ' y ' + $ToDate.Replace("-03:00","") + '</p>'
+$HandshakeHTMLTable = HandshakeTable -data $handshakeList
+$handshakeHtmlZone = $HandshakeHTMLTitle + $HandshakeHTMLParagraph + $HandshakeHTMLTable
+
+# Presets!
+$PresetsHTMLTitle = '<h3>3. PRESETS</h3>'
+$PresetsHTMLParaGraph = '<p>Presets que cambiaron, desde ' + $FromDate.Replace("-03:00","") + ' a ' + $ToDate.Replace("-03:00","") + '</p>'
+$PresetTable = PresetTable -data $PresetList
+$PresetsHTMLZone = $PresetsHTMLTitle + $PresetsHTMLParaGraph + $PresetTable
+
+# Alarmas!
+$AlarmasHTMLTitle = '<h3>4. ALARMAS</h3>'
+$AlarmasHTMLParaGraph = '<p>Alarmas que se dispararon, desde ' + $FromDate.Replace("-03:00","") + ' a ' + $ToDate.Replace("-03:00","") + '</p>'
+$AlarmasTable = AlarmaTable -data $AlarmaList
+$AlarmasHTMLZone = $AlarmasHTMLTitle + $AlarmasHTMLParaGraph + $AlarmasTable
+
+#$PresetTable = '<h3>Presets que cambiaron, desde ' + $FromDate.Replace("-03:00","") + ' a ' + $ToDate.Replace("-03:00","") + '</h3><br>' + $PresetTable
+#$AlarmaTable = '<h3>Alarmas que se dispararon, desde ' + $FromDate.Replace("-03:00","") + ' a ' + $ToDate.Replace("-03:00","") + '</h3><br>' + $AlarmaTable
+
+#$mail.HTMLBody = "<html>$head<body>$text1<br>$HandshakeTable<br>$PresetTable<br><h3>Pocentaje de errores en HS</h3><img src='data:image/png;base64,$GraficoHSErrores'/></body><html>"
+
+# realizar el HTML a renderizar
+$HtmlMail = "<html>" +
+            $head +
+            "<body>" +
+            $BitacoraHTMLZone + "<br>" + 
+            $handshakeHtmlZone + "<br>" + 
+            $PresetsHTMLZone + "<br>" + 
+            $AlarmasHTMLZone + 
+            "</body>" + 
+            "</html>"
 
 
-$mail.HTMLBody = "<html>$head<body>$text1<br>$HandshakeTable<br><h3>Pocentaje de errores en HS</h3><img src='data:image/png;base64,$GraficoHSErrores'/></body><html>"
+$mail.HTMLBody = $HtmlMail
 $mail.Display()
 $str = 'Listo!'
 Write-Host $str

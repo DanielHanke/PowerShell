@@ -1,0 +1,43 @@
+[
+  { "type": "panel", "x": 4, "y": 4, "h": 640, "w": 800 },
+  { "type": "label", "x": 4, "y": 4, "h":  30, "w": 800, "fontSize": 14, "label": "SOLICITAR PATRON" },
+  
+  { "type": "label", 	"x":  40, 	"y": 50, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PEPITO:" },
+  { "type": "dropdown", "x": 110, 	"y": 50, 	"h": 20, 	"w": 130, "label": "Item1" },
+  { "type": "label", 	"x": 280, 	"y": 50, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "TIPO DE TUBO:" },
+  { "type": "dropdown", "x": 340, 	"y": 50, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 500, 	"y": 50, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTILLA:" },
+  { "type": "dropdown", "x": 550, 	"y": 50, 	"h": 20, 	"w": 130, "label": "" },
+  
+  { "type": "label", 	"x":  40, 	"y": 80, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTA / LINEA:" },
+  { "type": "edit",     "x": 110, 	"y": 80, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 280, 	"y": 80, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "TIPO DE TUBO:" },
+  { "type": "edit",     "x": 340, 	"y": 80, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 500, 	"y": 80, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTILLA:" },
+  { "type": "edit",     "x": 550, 	"y": 80, 	"h": 20, 	"w": 130, "label": "" },
+
+  { "type": "label", 	"x":  40, 	"y": 110, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTA / LINEA:" },
+  { "type": "edit",     "x": 110, 	"y": 110, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 280, 	"y": 110, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "TIPO DE TUBO:" },
+  { "type": "edit",     "x": 340, 	"y": 110, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 500, 	"y": 110, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTILLA:" },
+  { "type": "edit",     "x": 550, 	"y": 110, 	"h": 20, 	"w": 130, "label": "" },
+    
+  { "type": "label", 	"x":  40, 	"y": 160, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTA / LINEA:" },
+  { "type": "edit",     "x": 110, 	"y": 160, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 280, 	"y": 160, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "TIPO DE TUBO:" },
+  { "type": "edit",     "x": 340, 	"y": 160, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 500, 	"y": 160, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTILLA:" },
+  { "type": "edit",     "x": 550, 	"y": 160, 	"h": 20, 	"w": 130, "label": "" },	
+
+  { "type": "label", 	"x":  40, 	"y": 190, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTA / LINEA:" },
+  { "type": "edit",     "x": 110, 	"y": 190, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 280, 	"y": 190, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "TIPO DE TUBO:" },
+  { "type": "edit",     "x": 340, 	"y": 190, 	"h": 20, 	"w": 130, "label": "" },
+  { "type": "label", 	"x": 500, 	"y": 190, 	"h": 40, 	"w": 30, "fontSize": 10, "label": "PLANTILLA:" },
+  { "type": "edit",     "x": 550, 	"y": 190, 	"h": 20, 	"w": 130, "label": "" },	
+  
+  { "type": "button", "x": 40, "y": 330, "h": 40, "w": 130, "label": "PRESS ME" }
+
+
+]

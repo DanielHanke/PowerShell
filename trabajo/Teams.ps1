@@ -1,12 +1,16 @@
-﻿Connect-MgGraph -Scopes "User.Read.All" -NoWelcome
+﻿
+Connect-MgGraph -Scopes "User.Read.All" -NoWelcome
 # Reemplaza 'userPrincipalName' con el correo electrónico del usuario
 $userPrincipalName = "MDCIANCHETTA@tenaris.com"
+
+Get-MgContext
 
 # Obtener el userId del usuario
 $user = Get-MgUser -UserId $userPrincipalName
 Write-Output $user
 
-$userId = $user.Id
+#$userId = $user.Id
+
 
 # Obtener el estado de presencia del usuario
 #$presence = Get-MgUserPresence -UserId $userId
@@ -21,4 +25,4 @@ $userId = $user.Id
 #Write-Output "El estado de presencia de $($user.DisplayName) es $($presence.Availability)"
 
 # Obtener la foto de perfil del usuario
-Get-MgUserPhotoContent -UserId $userId -OutFile "C:\Dev\PowerShell\trabajo\$userPrincipalName.jpg"
+#Get-MgUserPhotoContent -UserId $userId -OutFile "C:\Dev\PowerShell\trabajo\$userPrincipalName.jpg"
